@@ -1,0 +1,28 @@
+# Project Nyx AI System & Audio Hardware Settings
+server:
+  host: "127.0.0.1"
+  port: 8765
+  allowed_origins:
+    - "http://127.0.0.1:8765"
+    - "http://localhost:8765"
+    - "http://localhost:5173"
+    - "http://[::1]:8765"
+    - "http://[::1]:5173"
+audio:
+  input_sample_rate: 16000
+  output_sample_rate: 24000
+  hardware_resample_rate: 48000
+  channels: 1
+  vad_silence_duration_ms: 600
+  vad_threshold: 0.5
+  max_recording_seconds: 30.0
+models:
+  whisper_model: "large-v3-turbo"
+  whisper_compute_type: "int8_float16"
+  llm_model: "deepseek-flash"
+  llm_temperature: 0.7
+  llm_thinking_enabled: false
+  fallback_model: "qwen2.5:3b"
+  fallback_url: "http://127.0.0.1:11434"
+cache:
+  search_cache_ttl_seconds: 3600

@@ -1,0 +1,8 @@
+# Project Nyx Backend Constraints — Blocking Namespace Collisions & PyTorch Bloat
+# Forbids CPU onnxruntime which overwrites onnxruntime-gpu
+onnxruntime<0.0.0
+
+# Forbids heavy PyTorch/TorchAudio packages (Silero VAD is pure ONNX vendored)
+torch<0.0.0
+torchaudio<0.0.0
+torchvision<0.0.0

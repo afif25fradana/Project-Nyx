@@ -1,0 +1,46 @@
+# Environments & Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Local Data Stores & Secrets
+.env
+.env.*
+.env.local
+backend/data/*.db
+backend/data/*.db-wal
+backend/data/*.db-shm
+backend/data/.auth_token
+!backend/data/.gitkeep
+
+# Heavy Model Binaries (> 100MB GitHub limit)
+backend/app/audio/models/kokoro-v1.0.onnx
+
+# Node & Frontend Build
+web_hub/node_modules/
+web_hub/dist/
+web_hub/.vite/
+*.tsbuildinfo
+node_modules/
+dist/
+build/
+*.egg-info/
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.temp
+
+# OS & Editor Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

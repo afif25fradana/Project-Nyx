@@ -1,0 +1,60 @@
+# Project Nyx AI Backend — Production Pinned Dependencies
+# Target: Windows 11 x64 · NVIDIA RTX 3050 Laptop (6GB VRAM) · Python 3.12 · CUDA 12
+
+# --- Web & API Hub ---
+fastapi>=0.115.0,<1.0.0
+uvicorn[standard]>=0.32.0,<1.0.0
+websockets>=13.1,<14.0
+pydantic>=2.10.0,<3.0.0
+pydantic-settings>=2.6.0,<3.0.0
+pyyaml>=6.0.2
+
+# --- Numerical & Core Runtime ---
+numpy>=1.26.4,<2.2.0
+
+# --- CUDA 12 Pip Wheels (Windows x64 Dynamic Linkage) ---
+nvidia-cublas-cu12>=12.4.5.8
+nvidia-cudnn-cu12>=9.1.0.70
+nvidia-cuda-runtime-cu12>=12.4.127
+nvidia-cufft-cu12>=11.2.1.3
+nvidia-ml-py>=13.615.71
+
+# --- Neural Speech & Inference Engines ---
+# ONNX Runtime GPU pinned strictly to 1.26.0 for CUDA 12 baseline (>=1.27 targets CUDA 13)
+onnxruntime-gpu==1.26.0
+ctranslate2==4.8.2
+
+# Sub-dependencies for faster-whisper (installed via --no-deps in step 2):
+av>=13.0.0
+huggingface-hub>=0.26.0
+tokenizers>=0.20.0
+tqdm>=4.66.0
+
+# Sub-dependencies for kokoro-onnx & Misaki (Zero-PyTorch G2P):
+soundfile>=0.12.1
+espeakng-loader>=0.2.0
+phonemizer-fork>=3.3.1
+num2words>=0.5.13
+regex>=2024.9.11
+addict>=2.4.0
+spacy>=3.7.0,<4.0.0
+misaki>=0.8.0
+
+# Audio I/O
+sounddevice>=0.5.1
+
+# --- Brain & Tools ---
+openai>=1.68.0,<2.0.0
+tavily-python>=0.8.4
+ddgs>=9.16.0
+
+# --- Desktop Pet (Tier 1 GUI) ---
+pyside6>=6.8.0,<6.9.0
+
+# --- Testing & Quality Assurance ---
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+pytest-timeout>=2.4.0
+pytest-qt>=4.4.0
+httpx>=0.27.0
+respx>=0.22.0

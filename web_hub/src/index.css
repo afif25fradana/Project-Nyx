@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+@theme {
+  /* ------------------------------------------------------------- */
+  /* 60% Ground / Chassis (Deep Graphite & Structural Bay)         */
+  /* ------------------------------------------------------------- */
+  --color-chassis-950: #0d0e12;       /* Base workspace canvas ground */
+  --color-chassis-900: #13151b;       /* Deck outer perimeter & rack rails */
+  --color-chassis-850: #181a22;       /* Recessed module bays & tray floor */
+
+  /* ------------------------------------------------------------- */
+  /* 30% Surface / Hardware Panels (Faceplates & Controls)        */
+  /* ------------------------------------------------------------- */
+  --color-panel-800: #21242d;         /* Elevated module faceplate */
+  --color-panel-750: #282c37;         /* Active card surface & control pods */
+  --color-panel-700: #323745;         /* Bevel highlights & pressed buttons */
+  --color-panel-border: #383d4c;      /* 1px machined perimeter seams */
+  --color-panel-bezel: #1b1d25;       /* Debossed CRT bezel frame */
+  --color-panel-recessed: #0a0b0e;    /* Inset CRT screen well / terminal bay */
+
+  /* ------------------------------------------------------------- */
+  /* 10% Ink & Phosphor Accent (Cathode Amber & Status LEDs)       */
+  /* ------------------------------------------------------------- */
+  --color-amber-phosphor: #fbbf24;    /* Primary terminal CRT text (P3 phosphor) */
+  --color-amber-glow: #f59e0b;        /* Active indicators, turn pulses, sliders */
+  --color-amber-dim: #92400e;         /* Inactive CRT gridlines, subtle ticks */
+  --color-amber-muted: #d97706;       /* Control hover & secondary highlights */
+
+  /* High-Contrast Readability Inks */
+  --color-ink-primary: #f3f4f6;       /* Clean conversation text & headers */
+  --color-ink-secondary: #9ca3af;     /* Parameter captions & timestamps */
+  --color-ink-muted: #6b7280;         /* Inactive toggles & boundary labels */
+
+  /* Discrete Hardware Status Indicators */
+  --color-led-online: #10b981;        /* System operational / MicGate open */
+  --color-led-mute: #ef4444;          /* Hardware microphone muted */
+  --color-led-busy: #3b82f6;          /* CTranslate2 STT / Tool execution */
+
+  /* ------------------------------------------------------------- */
+  /* Typography Tokens                                             */
+  /* ------------------------------------------------------------- */
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  /* ------------------------------------------------------------- */
+  /* Tactile Radii (Machined hardware corners, strictly no pills)  */
+  /* ------------------------------------------------------------- */
+  --radius-chassis: 8px;              /* Main deck & module shells */
+  --radius-screen: 6px;               /* CRT monitor glass inner bezel */
+  --radius-switch: 4px;               /* Physical buttons, sliders, keys */
+
+  /* Brand Theme Tokens */
+  --color-nyx-primary: #f59e0b;
+  --color-nyx-surface: #0d0e12;
+  --color-nyx-card: #21242d;
+}
+
+/* Scanline overlay: 0 MB VRAM, pure compositor layer */
+.crt-scanlines {
+  position: relative;
+}
+.crt-scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.85;
+}
+
+/* Cathode tube glass curvature & vignette */
+.crt-vignette::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 60%,
+    rgba(10, 11, 15, 0.65) 90%,
+    rgba(10, 11, 15, 0.95) 100%
+  );
+  pointer-events: none;
+  z-index: 11;
+  border-radius: inherit;
+}
+
+/* Curved Fish-Eye CRT Cathode Tube Chassis */
+.crt-fisheye-tube {
+  position: relative;
+  /* Deep inset bezel shadows */
+  box-shadow:
+    inset 0 0 32px 10px rgba(0, 0, 0, 0.95),
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.9);
+}
+
+/* Subtle diagonal glass reflection & curved corner vignette */
+.crt-fisheye-tube.crt-vignette::after {
+  background:
+    /* Subtle diagonal glass reflection */
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.02) 25%,
+      transparent 38%,
+      transparent 100%
+    ),
+    /* Deep curved cathode tube corner vignette */
+    radial-gradient(
+      ellipse at 50% 50%,
+      transparent 52%,
+      rgba(10, 11, 15, 0.6) 80%,
+      rgba(10, 11, 15, 0.98) 100%
+    );
+}
+
+/* Vertical subpixel aperture grille lines (Trinitron-style) layered with scanlines */
+.crt-fisheye-tube.crt-scanlines::before {
+  background:
+    /* Vertical subpixel aperture grille lines */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    /* Horizontal scanlines */
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.22) 0px,
+      rgba(0, 0, 0, 0.22) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+/* VHS Tape Head-Switch Tracking Glitch (0 MB VRAM, pure compositor transforms) */
+@keyframes vhs-jitter {
+  0% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-2px, 1px, 0); }
+  40% { transform: translate3d(2px, -1px, 0); }
+  60% { transform: translate3d(-1px, 0, 0); }
+  80% { transform: translate3d(1px, 1px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes vhs-tracking-line {
+  0% {
+    top: -20%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.75;
+  }
+  80% {
+    opacity: 0.75;
+  }
+  100% {
+    top: 115%;
+    opacity: 0;
+  }
+}
+
+.vhs-glitch-active {
+  animation: vhs-jitter 0.16s steps(2) infinite;
+  filter: drop-shadow(-2px 0 rgba(239, 68, 68, 0.45)) drop-shadow(2px 0 rgba(59, 130, 246, 0.45));
+}
+
+.vhs-glitch-active::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(251, 191, 36, 0.3) 30%,
+    rgba(255, 255, 255, 0.65) 50%,
+    rgba(59, 130, 246, 0.3) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 15;
+  animation: vhs-tracking-line 0.2s linear forwards;
+}
+
+/* Phosphor persistence glow */
+.amber-phosphor-glow {
+  color: var(--color-amber-phosphor);
+  text-shadow: 0 0 4px rgba(245, 158, 11, 0.40), 0 0 10px rgba(245, 158, 11, 0.15);
+}
+
+/* Reduced motion accessibility override */
+@media (prefers-reduced-motion: reduce) {
+  .vhs-glitch-active {
+    animation: none;
+    filter: none;
+  }
+  .vhs-glitch-active::after {
+    display: none;
+    animation: none;
+  }
+  .crt-scanlines::before {
+    opacity: 0.25;
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .amber-phosphor-glow {
+    text-shadow: none;
+  }
+}
