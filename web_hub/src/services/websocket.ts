@@ -48,7 +48,13 @@ export class NyxWebSocketClient {
   private errorListeners = new Set<(error: any) => void>();
 
   constructor(options: WebSocketClientOptions = {}) {
-    this.url = options.url || getDefaultWebSocketUrl();
+    const rawUrl = options.url || getDefaultWebSocketUrl();
+    if (options.token) {
+      const separator = rawUrl.includes('?') ? (rawUrl.endsWith('?') || rawUrl.endsWith('&') ? '' : '&') : '?';
+      this.url = `${rawUrl}${separator}token=${encodeURIComponent(options.token)}`;
+    } else {
+      this.url = rawUrl;
+    }
     this.wsFactory =
       options.wsFactory ||
       options.webSocketFactory ||

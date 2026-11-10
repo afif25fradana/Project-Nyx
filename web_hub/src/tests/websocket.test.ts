@@ -76,6 +76,30 @@ describe('NyxWebSocketClient Service', () => {
       expect(createdSockets[0].url).toBe('ws://127.0.0.1:8765/ws/client');
     });
 
+    it('appends token query parameter when token option is provided', () => {
+      const client = new NyxWebSocketClient({
+        url: 'ws://127.0.0.1:8765/ws/client',
+        token: 'test_secret_token',
+        wsFactory,
+      });
+
+      expect(client.getUrl()).toBe('ws://127.0.0.1:8765/ws/client?token=test_secret_token');
+      client.connect();
+      expect(createdSockets[0].url).toBe('ws://127.0.0.1:8765/ws/client?token=test_secret_token');
+    });
+
+    it('appends token with ampersand when URL already contains existing query parameters', () => {
+      const client = new NyxWebSocketClient({
+        url: 'ws://127.0.0.1:8765/ws/client?mode=debug',
+        token: 'test_secret_token',
+        wsFactory,
+      });
+
+      expect(client.getUrl()).toBe('ws://127.0.0.1:8765/ws/client?mode=debug&token=test_secret_token');
+      client.connect();
+      expect(createdSockets[0].url).toBe('ws://127.0.0.1:8765/ws/client?mode=debug&token=test_secret_token');
+    });
+
     it('notifies status change listeners when connection is established', () => {
       const client = new NyxWebSocketClient({ wsFactory });
       const statusChanges: string[] = [];

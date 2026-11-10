@@ -221,6 +221,29 @@ def test_fsm_rejects_non_integer_turn_id():
         fsm.transition_to(AssistantState.LISTENING, turn_id=True)
 
 
+def test_fsm_listener_exception_is_logged_without_crashing_transition(caplog):
+    """Verify that an exception raised by a listener callback is logged and does not disrupt state transition."""
+    import logging
+
+    fsm = FiniteStateMachine()
+
+    def failing_listener(prev, new, turn_id):
+        raise RuntimeError("Boom in listener")
+
+    fsm.add_listener(failing_listener)
+
+    with caplog.at_level(logging.WARNING):
+        fsm.transition_to(AssistantState.LISTENING, turn_id=1)
+
+    assert fsm.state == AssistantState.LISTENING
+    assert len(caplog.records) > 0
+    assert any(
+        "listener" in record.message.lower()
+        or (record.exc_info and "listener" in str(record.exc_info).lower())
+        for record in caplog.records
+    )
+
+
 
 # ---------------------------------------------------------------------------
 # 2. TurnManager Mutex & Concurrency Tests

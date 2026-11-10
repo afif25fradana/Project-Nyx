@@ -10,9 +10,12 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Callable
 from enum import Enum
+import logging
 import threading
 import time
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 class AssistantState(str, Enum):
@@ -149,7 +152,7 @@ class FiniteStateMachine:
                     except RuntimeError:
                         pass
             except Exception:
-                pass
+                logger.exception("Exception in state machine listener callback")
 
     def transition(
         self, event: str, turn_id: int = 0
